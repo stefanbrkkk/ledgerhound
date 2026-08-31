@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security — Ledgerhound</title>
+<meta name="description" content="How Ledgerhound secures data: EU-region hosting, encryption, minimal storage, sub-processors, and how to report a vulnerability.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://ledgerhound.app/security">
+<link rel="icon" href="/assets/img/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="wrap top">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Ledgerhound home">
+      <svg class="brand-mark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true" focusable="false"><rect x="1.5" y="1.5" width="27" height="27" rx="6" fill="var(--ink)"/><rect x="7" y="8.5" width="16" height="2.4" rx="1.2" fill="var(--paper)"/><rect x="7" y="14" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".72"/><rect x="7" y="19.5" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".45"/><circle cx="22.6" cy="20.7" r="4.6" fill="none" stroke="#c0392b" stroke-width="1.8"/></svg>
+      <span class="brand-word">Ledgerhound</span>
+    </a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/#founding" class="btn btn-ink btn-sm">Founding plan</a>
+    </nav>
+  </header>
+</div>
+
+<main id="main">
+<div class="wrap">
+  <section class="legal" aria-labelledby="legal-h">
+    <p class="eyebrow">Trust · last updated August 31, 2026</p>
+    <h1 id="legal-h">Security</h1>
+    <p class="legal-lede">Accountants trust us with their client relationships. Here is exactly what we store, where, and who can touch it. The short version: <strong>v1 stores the checklist, not the documents.</strong></p>
+
+    <h2>What we store (v1)</h2>
+    <ul>
+      <li>The extracted document checklist: client name, document type, received/missing status, dates.</li>
+      <li>Your firm's account details and the nudge drafts you generate.</li>
+      <li>We do <strong>not</strong> store your clients' forwarded email bodies or the documents themselves beyond what is needed to produce the checklist, and we never use your data to train AI models.</li>
+    </ul>
+
+    <h2>Where it lives</h2>
+    <ul>
+      <li>Hosting: <strong>[HOSTING PROVIDER], EU region</strong> (e.g. Hetzner Nuremberg / Supabase EU).</li>
+      <li>Encrypted in transit (TLS 1.2+, HSTS) and at rest; strict content-security policy on this site.</li>
+      <li>Payments: handled entirely by our merchant of record; we never see card details.</li>
+    </ul>
+
+    <h2>Who can access it</h2>
+    <ul>
+      <li>The founder (operator) and named sub-processors only: hosting provider, payment MoR, and AI model provider under their data-processing agreements (OpenAI/Anthropic DPAs; business data is not used for model training by default).</li>
+      <li>Current sub-processor list with DPA links is available on request and in the customer DPA.</li>
+    </ul>
+
+    <h2>Your controls</h2>
+    <ul>
+      <li>One-click export of everything, anytime.</li>
+      <li>One-click deletion of a client record — or your whole account.</li>
+      <li>A signed Data Processing Agreement (GDPR Art. 28 shape) for firm customers on request.</li>
+    </ul>
+
+    <h2>Reporting a vulnerability</h2>
+    <p>Found something? Email <a href="mailto:hello@ledgerhound.app">hello@ledgerhound.app</a> with details. We respond within 2 business days and credit responsible disclosures (if you want).</p>
+  </section>
+</div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <svg class="brand-mark" width="26" height="26" viewBox="0 0 30 30" aria-hidden="true" focusable="false"><rect x="1.5" y="1.5" width="27" height="27" rx="6" fill="currentColor"/><rect x="7" y="8.5" width="16" height="2.4" rx="1.2" fill="var(--paper)"/><rect x="7" y="14" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".72"/><rect x="7" y="19.5" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".45"/><circle cx="22.6" cy="20.7" r="4.6" fill="none" stroke="#c0392b" stroke-width="1.8"/></svg>
+      <span>Ledgerhound</span>
+      <p class="foot-tag">The Monday chase list for bookkeepers.</p>
+    </div>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="/">Home</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/refund">Refunds</a>
+    </nav>
+    <div class="foot-imprint">
+      <p><strong>[LEGAL ENTITY NAME]</strong> · m.b. [MB] · PIB [PIB]<br>[REGISTERED ADDRESS], Belgrade, Serbia<br>hello@ledgerhound.app</p>
+      <p class="foot-fine">© 2026 · Filed from Belgrade, Serbia</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

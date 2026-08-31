@@ -1,0 +1,18 @@
+# Ledgerhound
+
+> The Monday chase list for bookkeepers. Forward the messy client emails every week; Ledgerhound reads what arrived, diffs it against each client's checklist, and returns the chase list plus ready-to-send nudge drafts. You review, you send.
+
+## Facts (for citations)
+- Ledgerhound is an AI document-chase tool for solo and small bookkeeping/accounting firms (B2B only).
+- It does NOT connect to your inbox at launch (forward-in only), does NOT auto-send emails, and does NOT give accounting, tax, or legal advice.
+- Founding plan: $349/year, capped at 20 firms, fully refundable until v1 ships (onboarding from October 2026). Standard plan: $49/month after the founding cohort ships.
+- Pricing is locked while a customer stays subscribed; one-click cancel; full data export anytime.
+- Seller: [LEGAL ENTITY NAME], [REGISTERED ADDRESS], Belgrade, Serbia. Payments via merchant of record (Polar).
+
+## Product
+- Landing page: https://ledgerhound.app/
+- Demo (client-side, deterministic): https://ledgerhound.app/#demo
+- Privacy: https://ledgerhound.app/privacy
+- Terms: https://ledgerhound.app/terms
+- Refund policy: https://ledgerhound.app/refund
+- Contact: hello@ledgerhound.app

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{width:1200px;height:630px;background:#1d2634;font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;position:relative;overflow:hidden}
+  .grain{position:absolute;inset:0;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='.06'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(244,241,232,.045) 1px,transparent 1px);background-size:100% 66px}
+  .brandline{position:absolute;top:44px;left:64px;display:flex;align-items:center;gap:16px}
+  .brandline .word{color:#f4f1e8;font-size:30px;font-weight:700;letter-spacing:-.5px}
+  .h1{position:absolute;top:120px;left:64px;width:640px;color:#f4f1e8;font-size:64px;line-height:1.04;font-weight:700;letter-spacing:-1.4px}
+  .h1 em{color:#e88a7a;font-style:italic}
+  .sub{position:absolute;top:364px;left:64px;width:560px;color:#b9c2ce;font-size:21px;line-height:1.5}
+  .pill{position:absolute;top:470px;left:64px;display:inline-block;background:#b23a2c;color:#fff8f2;font-size:16px;font-weight:700;letter-spacing:.6px;padding:12px 20px;border-radius:9px}
+  .url{position:absolute;bottom:44px;left:64px;color:#8fa0b3;font-family:ui-monospace,Menlo,monospace;font-size:15px;letter-spacing:.5px}
+  .card{position:absolute;right:56px;top:84px;width:470px;background:#f4f1e8;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.55)}
+  .chead{background:#161d29;color:#b9c2ce;display:flex;justify-content:space-between;padding:14px 20px;font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:1.6px}
+  .chead b{color:#f4f1e8;font-weight:700}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:16.5px 20px;border-bottom:1px dashed #d8d2bf}
+  .row:last-child{border-bottom:none}
+  .who{font-weight:700;color:#1d2634;font-size:17px}
+  .doc{color:#5d6570;font-size:14px;margin-top:3px;font-family:ui-monospace,Menlo,monospace}
+  .stamp{font-family:ui-monospace,Menlo,monospace;font-size:13px;font-weight:800;letter-spacing:1.2px;padding:7px 12px;border:2.5px solid;border-radius:5px;transform:rotate(-3deg)}
+  .in{color:#2f6b4f;border-color:#2f6b4f;background:rgba(47,107,79,.09)}
+  .out{color:#b23a2c;border-color:#b23a2c;background:rgba(178,58,44,.08)}
+</style>
+</head>
+<body>
+  <div class="grid"></div><div class="grain"></div>
+  <div class="brandline">
+    <svg width="52" height="52" viewBox="0 0 30 30"><rect x="1.5" y="1.5" width="27" height="27" rx="6" fill="#f4f1e8"/><rect x="7" y="8.5" width="16" height="2.4" rx="1.2" fill="#1d2634"/><rect x="7" y="14" width="16" height="2.4" rx="1.2" fill="#1d2634" opacity=".72"/><rect x="7" y="19.5" width="16" height="2.4" rx="1.2" fill="#1d2634" opacity=".45"/><circle cx="22.6" cy="20.7" r="4.6" fill="none" stroke="#e05a45" stroke-width="1.8"/></svg>
+    <span class="word">Ledgerhound</span>
+  </div>
+  <div class="h1">Stop chasing client documents. <em>Start receiving them.</em></div>
+  <div class="sub">Forward the mess every Monday. Ledgerhound hands you the chase list and ready-to-send nudges. <b style="color:#f4f1e8">You press send.</b></div>
+  <div class="pill">FOUNDING PLAN $349/YR · 20 FIRMS · REFUNDABLE UNTIL V1 SHIPS</div>
+  <div class="url">ledgerhound.app</div>
+  <div class="card" aria-hidden="true">
+    <div class="chead"><span><b>MONDAY CHASE LIST</b></span><span>WEEK 36</span></div>
+    <div class="row"><div><div class="who">Harbor Dental</div><div class="doc">Bank statements — Aug</div></div><span class="stamp in">Received</span></div>
+    <div class="row"><div><div class="who">Wren Fabrication</div><div class="doc">Payroll report — Sept</div></div><span class="stamp in">Received</span></div>
+    <div class="row"><div><div class="who">Cedar Coffee Co.</div><div class="doc">Receipts — fuel &amp; software</div></div><span class="stamp out">Missing</span></div>
+    <div class="row"><div><div class="who">Wren Fabrication</div><div class="doc">1099 confirmations</div></div><span class="stamp out">Missing</span></div>
+    <div class="row"><div><div class="who">Harbor Dental</div><div class="doc">Loan statement — Q3</div></div><span class="stamp out">Missing</span></div>
+  </div>
+</body>
+</html>
