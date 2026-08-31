@@ -3,9 +3,11 @@
   "use strict";
 
   // ── Launch configuration ─────────────────────────────────────────────
-  // Set to your Formspree/endpoint URL to receive founding requests.
-  // Empty string = requests are queued locally + a prefilled email opens.
-  var FORM_ENDPOINT = "";
+  // Intake route: Vercel serverless /api/request (works out of the box).
+  // Set RESEND_API_KEY + NOTIFY_EMAIL in the Vercel dashboard to get email
+  // notifications; until then requests are logged server-side and the
+  // client keeps a local queue as backup.
+  var FORM_ENDPOINT = "/api/request";
 
   var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (prefersReduced) document.documentElement.classList.add("reduced");
@@ -175,8 +177,12 @@
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify(payload)
         }).then(function (res) {
-          if (res.ok) {
-            status.textContent = "Request received — founding invites go out weekly, either way you'll hear from us.";
+          return res.json().then(function (data) { return { ok: res.ok, data: data }; });
+        }).then(function (r) {
+          if (r.ok) {
+            status.textContent = r.data && r.data.notified
+              ? "Request received — founding invites go out weekly, either way you'll hear from us."
+              : "Request received — you're in the queue; invites go out weekly.";
             form.reset();
           } else {
             queueLocal(payload);
@@ -202,6 +208,13 @@
   // exposed for the demo unlock
   window.LH_MAIL = function (email, tag) {
     queueLocal({ email: email, tag: tag, source: "demo-gate" });
+    if (FORM_ENDPOINT) {
+      fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ email: email, tag: tag, plan: "demo-unlock", source: "demo-gate" })
+      }).catch(function () {});
+    }
   };
 
   // ── boot ─────────────────────────────────────────────────────────────
