@@ -5,7 +5,9 @@
 - [ ] Serbian advisor sanity pass on terms/refund/imprint (structure done; see legal_foundations.md)
 - [ ] Buy domain: ledgerhound.app (free per RDAP Aug 31 2026; .io / .co.uk fallback)
 - [x] Site pushed to github.com/stefanbrkkk/ledgerhound (private)
-- [ ] Deploy: vercel.com/new → import stefanbrkkk/ledgerhound → Framework "Other" → Deploy (README has steps)
+- [x] DEPLOYED: https://ledgerhound-tau.vercel.app (public; API intake live; project `ledgerhound` under stefanbrkkk)
+- [ ] Optional now: add RESEND_API_KEY + NOTIFY_EMAIL env vars in Vercel dashboard (free resend.com account) → request notifications land in your inbox
+- [ ] Name risk flagged: an unrelated crypto product "LedgerHound" exists (ledgerhound.vercel.app) — decide keep vs rename before heavy branding spend
 - [ ] Point domain at deployment; verify HTTPS + HSTS
 - [ ] Set FORM_ENDPOINT in assets/js/app.js (Formspree) — otherwise founding requests only queue locally
 - [ ] Create Polar founding checkout ($349/yr) + paste link into launch-kit outreach + (optionally) founding tier CTA

@@ -16,6 +16,10 @@ python3 -m http.server 8123   # from this folder
 # open http://127.0.0.1:8123
 ```
 
+## Live
+**Production: https://ledgerhound-tau.vercel.app** (public, deployed Aug 31 2026)
+> NOTE: `ledgerhound.vercel.app` is taken by an unrelated crypto product named "LedgerHound" — our alias is `ledgerhound-tau`. The vercel.app alias is interim; point the ledgerhound.app domain at the project when bought.
+
 ## Deploy (Vercel, 2 minutes)
 1. Done — the site is pushed to github.com/stefanbrkkk/ledgerhound (private).
 2. Import → Framework preset "Other" → Deploy. `vercel.json` handles clean URLs + security headers.
