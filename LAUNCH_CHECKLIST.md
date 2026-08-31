@@ -4,7 +4,8 @@
 - [ ] Fill legal placeholders `[LEGAL ENTITY NAME]`, `[MB]`, `[PIB]`, `[REGISTERED ADDRESS]` in: index.html footer, privacy.html, terms.html, refund.html
 - [ ] Serbian advisor sanity pass on terms/refund/imprint (structure done; see legal_foundations.md)
 - [ ] Buy domain: ledgerhound.app (free per RDAP Aug 31 2026; .io / .co.uk fallback)
-- [ ] Deploy: Vercel import (see README) or Cloudflare Pages (_headers/_redirects already included)
+- [x] Site pushed to github.com/stefanbrkkk/ledgerhound (private)
+- [ ] Deploy: vercel.com/new → import stefanbrkkk/ledgerhound → Framework "Other" → Deploy (README has steps)
 - [ ] Point domain at deployment; verify HTTPS + HSTS
 - [ ] Set FORM_ENDPOINT in assets/js/app.js (Formspree) — otherwise founding requests only queue locally
 - [ ] Create Polar founding checkout ($349/yr) + paste link into launch-kit outreach + (optionally) founding tier CTA

@@ -17,7 +17,7 @@ python3 -m http.server 8123   # from this folder
 ```
 
 ## Deploy (Vercel, 2 minutes)
-1. Push this folder to a Git repo (or drag-drop the folder at vercel.com/new).
+1. Done — the site is pushed to github.com/stefanbrkkk/ledgerhound (private).
 2. Import → Framework preset "Other" → Deploy. `vercel.json` handles clean URLs + security headers.
 3. Add your domain (ledgerhound.app) in Project → Settings → Domains.
 
