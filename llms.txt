@@ -7,12 +7,13 @@
 - It does NOT connect to your inbox at launch (forward-in only), does NOT auto-send emails, and does NOT give accounting, tax, or legal advice.
 - Founding plan: $349/year, capped at 20 firms, fully refundable until v1 ships (onboarding from October 2026). Standard plan: $49/month after the founding cohort ships.
 - Pricing is locked while a customer stays subscribed; one-click cancel; full data export anytime.
-- Seller: [LEGAL ENTITY NAME], [REGISTERED ADDRESS], Belgrade, Serbia. Payments via merchant of record (Polar).
+- Seller: [LEGAL ENTITY NAME], [REGISTERED ADDRESS], Belgrade, Serbia. Payments via a merchant of record ([MERCHANT OF RECORD LEGAL NAME]).
 
 ## Product
 - Landing page: https://ledgerhound.app/
-- Demo (client-side, deterministic): https://ledgerhound.app/#demo
+- Demo (runs entirely in the visitor's browser; nothing is uploaded): https://ledgerhound.app/#demo
 - Privacy: https://ledgerhound.app/privacy
 - Terms: https://ledgerhound.app/terms
 - Refund policy: https://ledgerhound.app/refund
+- Security: https://ledgerhound.app/security
 - Contact: hello@ledgerhound.app

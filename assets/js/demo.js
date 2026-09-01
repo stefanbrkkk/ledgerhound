@@ -1,85 +1,172 @@
-/* Ledgerhound — deterministic demo engine (client-side, zero API, zero upload) */
+/* Ledgerhound — deterministic demo engine (client-side, zero API, zero upload).
+ *
+ * Every document on the checklist belongs to a client, and every sample email
+ * delivers a known subset. Forwarding an email marks its documents as arrived;
+ * everything still outstanding is attributed to the client who owes it, which
+ * is what makes the generated chase list and the nudge drafts meaningful.
+ */
 (function () {
   "use strict";
 
+  var CLIENTS = {
+    harbor: "Harbor Dental",
+    cedar: "Cedar Coffee Co.",
+    wren: "Wren Fabrication"
+  };
+
+  /* The Q3 checklist: 8 documents, each owed by exactly one client. */
   var DOCS = [
-    { id: "stmts", name: "Bank statements — August",  keys: ["bank statement", "statements"] },
-    { id: "pnl",   name: "Profit & loss — Q3 draft",  keys: ["profit and loss", "p&l", "pnl"] },
-    { id: "recs",  name: "Receipts — fuel & software", keys: ["receipt"] },
-    { id: "pay",   name: "Payroll report — September", keys: ["payroll", "wage report"] },
-    { id: "vat",   name: "VAT / sales tax returns",    keys: ["vat", "sales tax"] },
-    { id: "m1099", name: "1099 / supplier confirmations", keys: ["1099", "supplier confirmation"] },
-    { id: "mile",  name: "Mileage log",                keys: ["mileage", "logbook"] },
-    { id: "loan",  name: "Loan statement — Q3",        keys: ["loan statement"] }
+    { id: "stmts", client: "harbor", name: "Bank statements — August" },
+    { id: "pnl", client: "wren", name: "Profit & loss — Q3 draft" },
+    { id: "recs", client: "cedar", name: "Receipts — fuel & software" },
+    { id: "pay", client: "wren", name: "Payroll report — September" },
+    { id: "vat", client: "cedar", name: "VAT / sales tax returns" },
+    { id: "m1099", client: "wren", name: "1099 / supplier confirmations" },
+    { id: "mile", client: "harbor", name: "Mileage log" },
+    { id: "loan", client: "harbor", name: "Loan statement — Q3" }
   ];
 
+  /* Six overnight emails. Between them they deliver 6 of the 8 documents, so a
+     full run always ends with a real two-client chase list rather than an
+     empty or nonsensical one. */
   var MAILS = [
-    { from: "Marta K. · Harbor Dental", subj: "August statements attached", body: "Hi — statements for August are attached as one PDF.", docs: ["stmts"], tone: "polite" },
-    { from: "Dev P. · Cedar Coffee Co.", subj: "receipts pile from the van", body: "Photo'd the fuel receipts and the software invoice, see below.", docs: ["recs"], tone: "polite" },
-    { from: "Priya S. · Wren Fabrication", subj: "P&L draft + loan statement", body: "P&L draft is here and the loan statement from the bank, both attached.", docs: ["pnl", "loan"], tone: "polite" },
-    { from: "Tom W. · Wren Fabrication", subj: "payroll report", body: "September payroll report is in the shared drive, link below.", docs: ["pay"], tone: "polite" },
-    { from: "Sam R. · Harbor Dental", subj: "mileage log from the site visits", body: "Attaching the mileage log the accountant asked for.", docs: ["mile"], tone: "polite" },
-    { from: "Ana G. · Cedar Coffee Co.", subj: "the VAT sheet", body: "VAT numbers for last quarter are in the spreadsheet.", docs: ["vat"], tone: "polite" }
+    { from: "Marta K.", client: "harbor", subj: "August statements attached", docs: ["stmts"] },
+    { from: "Dev P.", client: "cedar", subj: "receipts pile from the van", docs: ["recs"] },
+    { from: "Priya S.", client: "wren", subj: "P&L draft for the quarter", docs: ["pnl"] },
+    { from: "Tom W.", client: "wren", subj: "payroll report", docs: ["pay"] },
+    { from: "Sam R.", client: "harbor", subj: "mileage log from the site visits", docs: ["mile"] },
+    { from: "Ana G.", client: "cedar", subj: "the VAT sheet", docs: ["vat"] }
   ];
 
-  // Nudge draft templates — client-side, deterministic
+  var FREE_RUNS = 3;
+
   var NUDGES = {
     polite: function (client, docList) {
-      return "Subject: " + client + " — quick check on " + docList[0] + "\n\nHi there,\n\nJust doing the monthly round-up and noticed we're still waiting on " + docList.join(" and ") + " from your side. No rush at all — if you can send it over by Friday, we'll have everything closed off in time for the monthly report.\n\nThanks so much,\n[Your name]";
+      return "Subject: " + client + " — quick check on " + docList[0] +
+        "\n\nHi there,\n\nJust doing the monthly round-up and noticed we're still waiting on " +
+        joinList(docList) + " from your side. No rush at all — if you can send " +
+        (docList.length > 1 ? "them" : "it") +
+        " over by Friday, we'll have everything closed off in time for the monthly report." +
+        "\n\nThanks so much,\n[Your name]";
     },
     firm: function (client, docList) {
-      return "Subject: " + client + " — still needed: " + docList[0] + "\n\nHi,\n\nFollowing up on " + docList.join(" and ") + " — we still haven't received " + (docList.length > 1 ? "them" : "it") + ", and the month-end close is starting to slip because of it. If there's anything blocking on your side, let me know and we'll sort it out together. Otherwise, can we aim for Monday?\n\nBest,\n[Your name]";
+      return "Subject: " + client + " — still needed: " + docList[0] +
+        "\n\nHi,\n\nFollowing up on " + joinList(docList) + " — we still haven't received " +
+        (docList.length > 1 ? "them" : "it") +
+        ", and the month-end close is starting to slip because of it. If there's anything " +
+        "blocking on your side, let me know and we'll sort it out together. Otherwise, can " +
+        "we aim for Monday?\n\nBest,\n[Your name]";
     }
   };
 
+  function joinList(items) {
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return items[0] + " and " + items[1];
+    return items.slice(0, -1).join(", ") + " and " + items[items.length - 1];
+  }
+
   function $(s, r) { return (r || document).querySelector(s); }
-  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
 
   var state = { fwd: {}, runs: 0, unlocked: false, lastSig: "", inited: false };
-
   var LS = "lh_demo_v1";
 
   function loadLS() {
     try {
       var raw = window.localStorage.getItem(LS);
-      if (raw) {
-        var d = JSON.parse(raw);
-        if (d && typeof d === "object") {
-          state.fwd = d.fwd || {};
-          state.runs = d.runs || 0;
-          state.unlocked = !!d.unlocked;
-          state.lastSig = d.lastSig || "";
-        }
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (d && typeof d === "object") {
+        state.fwd = d.fwd || {};
+        state.runs = d.runs || 0;
+        state.unlocked = !!d.unlocked;
+        state.lastSig = d.lastSig || "";
       }
-    } catch (e) { /* private mode — in-memory only */ }
+    } catch { /* private mode — in-memory only */ }
   }
+
   function saveLS() {
     try {
-      window.localStorage.setItem(LS, JSON.stringify({ fwd: state.fwd, runs: state.runs, unlocked: state.unlocked, lastSig: state.lastSig }));
-    } catch (e) { /* ignore */ }
+      window.localStorage.setItem(LS, JSON.stringify({
+        fwd: state.fwd, runs: state.runs, unlocked: state.unlocked, lastSig: state.lastSig
+      }));
+    } catch { /* ignore */ }
   }
 
-  function fmt(n) { return n + ""; }
+  function motionOn() {
+    return document.documentElement.classList.contains("js-motion");
+  }
 
+  /* ── Arrival model ────────────────────────────────────────────────────────
+     Computed once per render instead of re-scanning every mail for every doc. */
+  function arrivedSet() {
+    var set = {};
+    Object.keys(state.fwd).forEach(function (k) {
+      if (!state.fwd[k]) return;
+      var mail = MAILS[Number(k)];
+      if (!mail) return;
+      mail.docs.forEach(function (id) { set[id] = true; });
+    });
+    return set;
+  }
+
+  function anyFwd() {
+    return Object.keys(state.fwd).some(function (k) { return state.fwd[k]; });
+  }
+
+  function fwdSignature() {
+    return Object.keys(state.fwd)
+      .filter(function (k) { return state.fwd[k]; })
+      .sort()
+      .join(",");
+  }
+
+  /* ISO-8601 week number, so the chase list is dated rather than hardcoded. */
+  function isoWeek(d) {
+    var t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+    var yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+    return Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
+  }
+
+  /* ── Render: inbox ───────────────────────────────────────────────────── */
   function renderMails() {
     var ul = $("#mails");
     if (!ul) return;
     ul.textContent = "";
     MAILS.forEach(function (m, i) {
+      var docNames = m.docs.map(function (id) { return docById(id).name; });
       var li = document.createElement("li");
       li.className = "mail" + (state.fwd[i] ? " is-fwd" : "");
-      var docs = m.docs.map(function (id) { return docById(id).name; });
-      li.innerHTML =
-        '<div class="mail-top"><div><div class="mail-from">' + esc(m.from) + '</div>' +
-        '<div class="mail-subj">' + esc(m.subj) + '</div>' +
-        '<div class="mail-doc">delivers: ' + esc(docs.join(" · ")) + '</div></div>' +
-        (state.fwd[i]
-          ? '<span class="fwd-mark" style="color:var(--green);font-weight:700">FWD ✓</span>'
-          : '<button type="button" class="mail-fwd" data-i="' + i + '">Forward</button>') +
-        '</div>';
+
+      var top = el("div", "mail-top");
+      var meta = document.createElement("div");
+      meta.appendChild(el("div", "mail-from", m.from + " · " + CLIENTS[m.client]));
+      meta.appendChild(el("div", "mail-subj", m.subj));
+      meta.appendChild(el("div", "mail-doc", "delivers: " + docNames.join(" · ")));
+      top.appendChild(meta);
+
+      if (state.fwd[i]) {
+        top.appendChild(el("span", "fwd-mark", "FWD ✓"));
+      } else {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "mail-fwd";
+        btn.dataset.i = String(i);
+        btn.textContent = "Forward";
+        btn.setAttribute("aria-label", "Forward the email from " + m.from + " at " + CLIENTS[m.client]);
+        top.appendChild(btn);
+      }
+      li.appendChild(top);
       ul.appendChild(li);
     });
     updateCounts();
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
   }
 
   function docById(id) {
@@ -87,61 +174,51 @@
     return null;
   }
 
+  /* ── Render: checklist ───────────────────────────────────────────────── */
   function renderChecklist() {
     var ul = $("#cl-list");
     if (!ul) return;
+    var arrived = arrivedSet();
+    var started = anyFwd();
+    var received = 0;
     ul.textContent = "";
     DOCS.forEach(function (d) {
-      var arrived = false;
-      Object.keys(state.fwd).forEach(function (k) {
-        if (state.fwd[k]) MAILS[+k].docs.forEach(function (did) { if (did === d.id) arrived = true; });
-      });
-      var cls = arrived ? "is-in" : (anyFwd() ? "is-out" : "is-pending");
-      var label = arrived ? "Received" : (anyFwd() ? "Missing" : "Waiting");
-      var li = document.createElement("li");
-      li.className = "cl-row " + cls;
-      li.innerHTML = '<span class="cl-doc">' + esc(d.name) + '</span>' +
-        '<span class="cl-state">' + label + '</span>';
+      var isIn = !!arrived[d.id];
+      if (isIn) received++;
+      var li = el("li", "cl-row " + (isIn ? "is-in" : started ? "is-out" : "is-pending"));
+      li.appendChild(el("span", "cl-doc", d.name));
+      li.appendChild(el("span", "cl-state", isIn ? "Received" : started ? "Missing" : "Waiting"));
       ul.appendChild(li);
-      if (arrived) slamStamp(li);
+      if (isIn) slamStamp(li);
     });
-    var rec = receivedCount();
-    $("#cl-count").textContent = rec + " received";
-  }
-
-  function anyFwd() { return Object.keys(state.fwd).some(function (k) { return state.fwd[k]; }); }
-  function receivedCount() {
-    var n = 0;
-    DOCS.forEach(function (d) {
-      var arrived = false;
-      Object.keys(state.fwd).forEach(function (k) {
-        if (state.fwd[k]) MAILS[+k].docs.forEach(function (did) { if (did === d.id) arrived = true; });
-      });
-      if (arrived) n++;
-    });
-    return n;
+    $("#cl-count").textContent = received + " received";
   }
 
   function updateCounts() {
     var n = Object.keys(state.fwd).filter(function (k) { return state.fwd[k]; }).length;
-    var el = $("#dm-count");
-    if (el) el.textContent = n + " / " + MAILS.length + " forwarded";
-    $("#dm-all").disabled = n >= MAILS.length;
+    var el2 = $("#dm-count");
+    if (el2) el2.textContent = n + " / " + MAILS.length + " forwarded";
+    var all = $("#dm-all");
+    if (all) {
+      var done = n >= MAILS.length;
+      all.disabled = done;
+      all.textContent = done ? "All six forwarded" : "Forward all six";
+    }
   }
 
   function slamStamp(row) {
     var st = row.querySelector(".cl-state");
-    if (!st || row.dataset.slammed) return;
-    row.dataset.slammed = "1";
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!st || !motionOn() || typeof st.animate !== "function") return;
     st.animate(
-      [{ transform: "scale(1.9) rotate(-7deg)", opacity: 0.4 }, { transform: "scale(1) rotate(-2deg)", opacity: 1 }],
+      [{ transform: "scale(1.9) rotate(-7deg)", opacity: 0.4 },
+        { transform: "scale(1) rotate(-2deg)", opacity: 1 }],
       { duration: 260, easing: "cubic-bezier(.2,0,0,1)", fill: "both" }
     );
   }
 
+  /* ── Actions ─────────────────────────────────────────────────────────── */
   function forward(i) {
-    if (state.fwd[i] || i < 0 || i >= MAILS.length) return;
+    if (!(i >= 0 && i < MAILS.length) || state.fwd[i]) return;
     state.fwd[i] = true;
     saveLS();
     renderMails();
@@ -150,68 +227,58 @@
   }
 
   function forwardAll() {
-    MAILS.forEach(function (_, i) { if (!state.fwd[i]) state.fwd[i] = true; });
+    MAILS.forEach(function (_, i) { state.fwd[i] = true; });
     saveLS();
     renderMails();
     renderChecklist();
     maybeRefreshChase();
   }
 
-  function missingDocs() {
-    var out = [];
+  /* Documents that have not arrived, grouped by the client who owes them. */
+  function missingByClient() {
+    var arrived = arrivedSet();
+    var groups = [];
+    var index = {};
     DOCS.forEach(function (d) {
-      var arrived = false;
-      Object.keys(state.fwd).forEach(function (k) {
-        if (state.fwd[k]) MAILS[+k].docs.forEach(function (did) { if (did === d.id) arrived = true; });
-      });
-      if (!arrived) out.push(d);
+      if (arrived[d.id]) return;
+      var name = CLIENTS[d.client];
+      if (index[name] === undefined) {
+        index[name] = groups.length;
+        groups.push({ client: name, docs: [] });
+      }
+      groups[index[name]].docs.push(d.name);
     });
-    return out;
-  }
-
-  function missingPerClient() {
-    var map = {};
-    MAILS.forEach(function (m, i) {
-      if (!state.fwd[i]) return;
-      var client = m.from.split("·")[1] ? m.from.split("·")[1].trim() : m.from;
-      var has = {};
-      m.docs.forEach(function (d) { has[d] = true; });
-      Object.keys(has).forEach(function (d) { map[d] = client; });
-    });
-    return map;
-  }
-
-  function fwdSignature() {
-    return Object.keys(state.fwd).filter(function (k) { return state.fwd[k]; }).sort().join(",");
+    return groups;
   }
 
   function generate() {
-    // gate check
-    var left = 3 - state.runs;
-    if (left <= 0 && !state.unlocked) {
-      $("#chasecard").hidden = true;
-      $("#gate").hidden = false;
-      return;
-    }
-    // empty inbox: guide instead of a nonsense list
+    var card = $("#chasecard");
+
+    // Nothing forwarded: explain rather than print a nonsense list.
     if (!anyFwd()) {
-      var card0 = $("#chasecard");
-      card0.hidden = false;
+      card.hidden = false;
       var out0 = $("#chase-out");
       out0.textContent = "";
       var li0 = document.createElement("li");
-      li0.innerHTML = '<span class="co-client">Forward at least one client email first — the hound can\'t read an empty inbox.</span>';
+      li0.appendChild(el("span", "co-client",
+        "Forward at least one client email first — the hound can't read an empty inbox."));
+      li0.classList.add("show");
       out0.appendChild(li0);
       $("#drafts").textContent = "";
       $("#gate").hidden = true;
       return;
     }
-    // unchanged inbox state = same list: re-render without burning a run
+
+    // Re-rendering the same inbox state costs nothing and burns no run.
     var sig = fwdSignature();
-    if (sig === state.lastSig && !$("#chasecard").hidden) {
-      renderChase();
+    if (sig === state.lastSig && !card.hidden) { renderChase(); return; }
+
+    if (state.runs >= FREE_RUNS && !state.unlocked) {
+      card.hidden = true;
+      showGate();
       return;
     }
+
     state.runs++;
     state.lastSig = sig;
     saveLS();
@@ -219,69 +286,79 @@
   }
 
   function renderChase() {
-    var missing = missingDocs();
-    var map = missingPerClient();
+    var groups = missingByClient();
     var card = $("#chasecard");
     card.hidden = false;
     $("#gate").hidden = true;
+
+    var now = new Date();
+    $("#chase-week").textContent = "Week " + isoWeek(now) + " · " +
+      now.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+
     var out = $("#chase-out");
     out.textContent = "";
-    var week = "WEEK 36 · " + new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" });
-    $("#chase-week").textContent = week;
-    var clients = {};
-    missing.forEach(function (d) { clients[map[d.id] || "Unassigned client"] = true; });
-    var clientList = Object.keys(clients);
     var rows = [];
-    missing.forEach(function (d) {
-      var c = map[d.id] || "Unassigned client";
-      rows.push({ client: c, doc: d.name });
+    groups.forEach(function (g) {
+      g.docs.forEach(function (doc) { rows.push({ client: g.client, doc: doc }); });
     });
-    rows.forEach(function (r, i) {
-      var li = document.createElement("li");
-      li.innerHTML = '<span class="co-client">' + esc(r.client) + '</span>' +
-        '<span class="co-doc">MISSING — ' + esc(r.doc) + '</span>';
-      out.appendChild(li);
-      setTimeout(function () { li.classList.add("show"); }, 140 + i * 220);
-    });
+
+    var animate = motionOn();
     if (!rows.length) {
-      var li2 = document.createElement("li");
-      li2.innerHTML = '<span class="co-client" style="color:var(--green);font-weight:700">All documents received. Zero chasing needed this week.</span>';
-      out.appendChild(li2);
-      setTimeout(function () { li2.classList.add("show"); }, 140);
+      var liDone = document.createElement("li");
+      liDone.appendChild(el("span", "co-client co-clear",
+        "All documents received. Zero chasing needed this week."));
+      out.appendChild(liDone);
+      reveal(liDone, 0, animate);
+    } else {
+      rows.forEach(function (r, i) {
+        var li = document.createElement("li");
+        li.appendChild(el("span", "co-client", r.client));
+        li.appendChild(el("span", "co-doc", "MISSING — " + r.doc));
+        out.appendChild(li);
+        reveal(li, i, animate);
+      });
     }
-    // drafts
+
+    // One draft per client that owes something, up to two.
     var drafts = $("#drafts");
     drafts.textContent = "";
-    var byClient = {};
-    rows.forEach(function (r) { (byClient[r.client] = byClient[r.client] || []).push(r.doc); });
-    var names = Object.keys(byClient);
-    if (names.length) {
-      var n1 = NUDGES.polite(names[0], byClient[names[0]]);
-      drafts.appendChild(draftEl("Draft 1 · gentle nudge · to " + names[0], n1));
-      if (names[1]) {
-        drafts.appendChild(draftEl("Draft 2 · firmer nudge · to " + names[1], NUDGES.firm(names[1], byClient[names[1]])));
-      } else if (byClient[names[0]].length > 1) {
-        drafts.appendChild(draftEl("Draft 2 · firmer nudge · to " + names[0], NUDGES.firm(names[0], byClient[names[0]])));
-      }
+    if (groups[0]) {
+      drafts.appendChild(draftEl(
+        "Draft 1 · gentle nudge · to " + groups[0].client,
+        NUDGES.polite(groups[0].client, groups[0].docs)));
+    }
+    if (groups[1]) {
+      drafts.appendChild(draftEl(
+        "Draft 2 · firmer nudge · to " + groups[1].client,
+        NUDGES.firm(groups[1].client, groups[1].docs)));
     }
     renderGateStatus();
   }
 
+  function reveal(li, i, animate) {
+    if (!animate) { li.classList.add("show"); return; }
+    window.setTimeout(function () { li.classList.add("show"); }, 120 + i * 160);
+  }
+
   function draftEl(title, body) {
-    var d = document.createElement("div");
-    d.className = "draft";
-    d.innerHTML = '<div class="draft-head"><span>' + esc(title) + '</span><span>YOUR SEND BUTTON</span></div>' +
-      '<div class="draft-body">' + esc(body) + '</div>';
+    var d = el("div", "draft");
+    var head = el("div", "draft-head");
+    head.appendChild(el("span", null, title));
+    head.appendChild(el("span", null, "YOUR SEND BUTTON"));
+    d.appendChild(head);
+    d.appendChild(el("div", "draft-body", body));
     return d;
   }
 
   function maybeRefreshChase() {
-    if (!$("#chasecard").hidden) renderChase(); // re-render live, does NOT consume a run
+    if (!$("#chasecard").hidden) renderChase(); // live re-render, costs no run
   }
 
+  /* Reset clears the inbox and the output but deliberately does NOT reset the
+     run counter — otherwise the three-free-lists gate is bypassed by clicking
+     Reset. Unlock state is preserved too. */
   function reset() {
     state.fwd = {};
-    state.runs = 0;
     state.lastSig = "";
     saveLS();
     renderMails();
@@ -292,33 +369,64 @@
     $("#drafts").textContent = "";
     renderGateStatus();
     var dm = $("#demo");
-    if (dm) dm.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (dm) dm.scrollIntoView({ behavior: motionOn() ? "smooth" : "auto", block: "start" });
   }
 
   function renderGateStatus() {
-    var left = 3 - state.runs;
-    var el = $("#runs-left");
-    if (!el) return;
-    if (state.unlocked) el.textContent = "Unlimited demos — founding invite sent to your inbox path.";
-    else if (left > 0) el.textContent = left + " free " + (left === 1 ? "list" : "lists") + " left — then unlock.";
-    else el.textContent = "0 lists left — unlock below.";
+    var elx = $("#runs-left");
+    if (!elx) return;
+    if (state.unlocked) { elx.textContent = "Unlocked — generate as many lists as you like."; return; }
+    var left = Math.max(0, FREE_RUNS - state.runs);
+    elx.textContent = left > 0
+      ? left + " free " + (left === 1 ? "list" : "lists") + " left — then unlock."
+      : "0 lists left — unlock below.";
   }
 
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  /* ── Gate ────────────────────────────────────────────────────────────── */
+  function showGate() {
+    var g = $("#gate");
+    g.hidden = false;
+    var h = $("#gate-h");
+    if (h) h.focus(); // move focus to the panel that just appeared
+  }
+
+  function showUnlocked(email) {
+    var g = $("#gate");
+    g.textContent = "";
+    var card = el("div", "gate-card");
+    var h = el("h3", null, "Unlocked.");
+    h.id = "gate-h";
+    h.tabIndex = -1;
+    card.appendChild(h);
+    card.appendChild(el("p", null,
+      "Three more lists are yours — and the founding invite is on its way to " + email +
+      " when the cohort opens."));
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn btn-accent";
+    btn.textContent = "Generate another list";
+    btn.addEventListener("click", function () {
+      g.hidden = true;
+      var gen = $("#dm-gen");
+      if (gen) { gen.focus(); }
+      generate();
     });
+    card.appendChild(btn);
+    g.appendChild(card);
+    h.focus();
   }
 
+  /* ── Init ────────────────────────────────────────────────────────────── */
   function init() {
     if (state.inited) return;
-    state.inited = true;
-    loadLS();
     var ul = $("#mails");
     if (!ul) return; // not the index page
+    state.inited = true;
+    loadLS();
     renderMails();
     renderChecklist();
     renderGateStatus();
+
     ul.addEventListener("click", function (ev) {
       var b = ev.target.closest(".mail-fwd");
       if (b) forward(parseInt(b.dataset.i, 10));
@@ -326,35 +434,39 @@
     $("#dm-all").addEventListener("click", forwardAll);
     $("#dm-gen").addEventListener("click", function () { generate(); });
     $("#dm-reset").addEventListener("click", reset);
+
     var gateForm = $("#gate-form");
+    var gateEmail = $("#gate-email");
+    var gateErr = $("#gate-email-err");
+
     gateForm.addEventListener("submit", function (ev) {
       ev.preventDefault();
-      if (!gateForm.checkValidity()) { gateForm.reportValidity(); return; }
+      var value = gateEmail.value.trim();
+      if (!gateForm.checkValidity() || !value) {
+        gateErr.hidden = false;
+        gateErr.textContent = "That doesn't look like a work email — mind checking it?";
+        gateEmail.setAttribute("aria-invalid", "true");
+        gateEmail.focus();
+        return;
+      }
       state.unlocked = true;
       saveLS();
-      // deliver email via shared app.js pipeline if present
-      var input = $("#gate-email");
-      if (window.LH_MAIL) window.LH_MAIL(input.value, "ledgerhound-demo-unlock");
-      var g = $("#gate");
-      g.innerHTML = '<div class="gate-card"><h3>Unlocked.</h3><p>Three more lists are yours — and the founding invite is on its way to ' +
-        esc(input.value) + ' when the cohort opens. Back to the demo:</p>' +
-        '<button type="button" class="btn btn-accent" id="gate-close">Generate another list</button></div>';
-      $("#gate-close").addEventListener("click", function () { $("#gate").hidden = true; });
+      if (window.LH_MAIL) window.LH_MAIL(value, "ledgerhound-demo-unlock");
+      showUnlocked(value);
       renderGateStatus();
-      // re-run available now
     });
-    $("#gate-email").addEventListener("blur", function () {
+
+    gateEmail.addEventListener("blur", function () {
       if (this.value && !this.checkValidity()) {
-        var err = $("#gate-email-err");
-        err.hidden = false;
-        err.textContent = "That doesn't look like a work email — mind checking it?";
+        gateErr.hidden = false;
+        gateErr.textContent = "That doesn't look like a work email — mind checking it?";
         this.setAttribute("aria-invalid", "true");
       }
     });
-    $("#gate-email").addEventListener("input", function () {
+    gateEmail.addEventListener("input", function () {
       if (this.checkValidity()) {
-        var err = $("#gate-email-err");
-        err.hidden = true;
+        gateErr.hidden = true;
+        gateErr.textContent = "";
         this.removeAttribute("aria-invalid");
       }
     });
