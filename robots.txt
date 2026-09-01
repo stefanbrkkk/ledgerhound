@@ -1,12 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /og-card.html
-Disallow: /privacy
-Disallow: /terms
-Disallow: /refund
-Disallow: /security
+Disallow: /api/
 
-# LLM crawlers are welcome — the llms.txt file explains the product.
+# LLM crawlers are welcome — llms.txt explains the product.
 User-agent: GPTBot
 Allow: /
 User-agent: ClaudeBot

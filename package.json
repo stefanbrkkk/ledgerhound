@@ -1,0 +1,28 @@
+{
+  "name": "ledgerhound-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ledgerhound marketing site — static, no build step.",
+  "type": "module",
+  "scripts": {
+    "serve": "node tools/serve.js",
+    "lint:html": "html-validate \"*.html\"",
+    "lint:css": "stylelint styles.css",
+    "lint:js": "eslint assets/js/app.js assets/js/demo.js api tools tests",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
+    "test:e2e": "node tests/e2e.mjs",
+    "test:a11y": "node tests/a11y.mjs",
+    "test:visual": "node tests/visual.mjs",
+    "test": "npm run lint && npm run test:a11y && npm run test:e2e",
+    "verify": "node tests/run-all.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "axe-core": "^4.10.2",
+    "eslint": "^9.17.0",
+    "html-validate": "^9.5.5",
+    "playwright": "^1.62.1",
+    "stylelint": "^16.12.0",
+    "stylelint-config-standard": "^37.0.0"
+  }
+}

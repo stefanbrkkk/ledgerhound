@@ -1,5 +1,5 @@
 Contact: mailto:hello@ledgerhound.app
 Expires: 2027-08-31T00:00:00Z
-Encryption: TLS 1.2+ enforced (see _headers HSTS)
 Preferred-Languages: en
-Policy: https://ledgerhound.app/terms
+Canonical: https://ledgerhound.app/.well-known/security.txt
+Policy: https://ledgerhound.app/security

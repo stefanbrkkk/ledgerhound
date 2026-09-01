@@ -4,7 +4,7 @@
 - [ ] Fill legal placeholders `[LEGAL ENTITY NAME]`, `[MB]`, `[PIB]`, `[REGISTERED ADDRESS]` in: index.html footer, privacy.html, terms.html, refund.html
 - [ ] Serbian advisor sanity pass on terms/refund/imprint (structure done; see legal_foundations.md)
 - [ ] Buy domain: ledgerhound.app (free per RDAP Aug 31 2026; .io / .co.uk fallback)
-- [x] Site pushed to github.com/stefanbrkkk/ledgerhound (private)
+- [x] Site pushed to the project repository
 - [x] DEPLOYED: https://ledgerhound-tau.vercel.app (public; API intake live; project `ledgerhound` under stefanbrkkk)
 - [ ] Optional now: add RESEND_API_KEY + NOTIFY_EMAIL env vars in Vercel dashboard (free resend.com account) → request notifications land in your inbox
 - [ ] Name risk flagged: an unrelated crypto product "LedgerHound" exists (ledgerhound.vercel.app) — decide keep vs rename before heavy branding spend
@@ -23,7 +23,7 @@
   - pre-payers demand OAuth instead of forward-in
   - <2 unsolicited demo requests by day 7
 - [ ] If gate passes: 3+ founding pre-pays = $1,047 = build sprint funded
-- [ ] If gate fails: run PlateCost protocol (research/third-bet-20260831-1415/dive_03.md + final_verdict.md) before building anything
+- [ ] If gate fails: run PlateCost protocol before building anything
 
 ## C. Week-2 (post-gate, pre-build)
 - [ ] Announce founding cohort in the same communities (waitlist open)

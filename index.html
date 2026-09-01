@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -9,20 +9,28 @@
 <meta name="theme-color" content="#1d2634">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ledgerhound">
+<meta property="og:locale" content="en_US">
 <meta property="og:title" content="Ledgerhound — stop chasing client documents">
 <meta property="og:description" content="AI doc-chase for bookkeepers: forward the mess, get the Monday chase list, send the nudges. Founding plan $349/yr — 20 firms.">
 <meta property="og:url" content="https://ledgerhound.app/">
 <meta property="og:image" content="https://ledgerhound.app/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ledgerhound — the Monday chase list for bookkeepers.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ledgerhound — stop chasing client documents">
 <meta name="twitter:description" content="Forward the mess every Monday. Ledgerhound hands you the chase list and ready-to-send nudges. You send.">
 <meta name="twitter:image" content="https://ledgerhound.app/assets/img/og.png">
+<meta name="twitter:image:alt" content="Ledgerhound — the Monday chase list for bookkeepers.">
 <link rel="icon" href="/assets/img/brand/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/img/brand/icon-192.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/bricolage-grotesque-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/styles.css">
-<!-- font-stack: Bricolage Grotesque (display) + Figtree (body) + JetBrains Mono (functional codes) — house stack, OFL, self-hosted; per saas-landing skeleton + craft typography (max 2 faces + functional mono) -->
-<!-- design concept: "The Monday Brief" — forensic filing-desk brutalism; full rationale: research/third-bet-20260831-1415/website_concept.md -->
+<!-- font stack: Bricolage Grotesque (display) + Figtree (body) + JetBrains Mono (functional codes)
+     — self-hosted OFL variable faces, declared in styles.css §1 -->
+<!-- design concept: "The Monday Brief" — forensic filing-desk brutalism -->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -35,7 +43,7 @@
         <rect x="7" y="8.5" width="16" height="2.4" rx="1.2" fill="var(--paper)"/>
         <rect x="7" y="14" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".72"/>
         <rect x="7" y="19.5" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".45"/>
-        <circle cx="22.6" cy="20.7" r="4.6" fill="none" stroke="#c0392b" stroke-width="1.8"/>
+        <circle cx="22.6" cy="20.7" r="4.6" fill="none" stroke="var(--red)" stroke-width="1.8"/>
       </svg>
       <span class="brand-word">Ledgerhound</span>
     </a>
@@ -44,55 +52,108 @@
       <a href="#how">How it works</a>
       <a href="#demo">Demo</a>
       <a href="#faq">FAQ</a>
-      <a href="#founding" class="btn btn-ink btn-sm">Founding plan — $349/yr</a>
     </nav>
+      <a href="#founding" class="btn btn-ink btn-sm">Founding plan — $349/yr</a>
   </header>
 </div>
 
 <main id="main" tabindex="-1">
-<!-- ───────────────────────── HERO ───────────────────────── -->
+<!-- ───────────────────── HERO + THE MONDAY MACHINE ─────────────────────
+     One stage: the copy column scrolls, the device column sticks and scrubs
+     through the week. app.js drives --p on .machine-rig from 0 → 1.        -->
 <div class="wrap">
-  <section class="hero" aria-labelledby="hero-h">
-    <p class="eyebrow" data-motion="fade">For bookkeepers &amp; accountants who chase documents</p>
-    <h1 id="hero-h" class="hero-h" data-split>Stop chasing client documents. <em>Start receiving them.</em></h1>
-    <p class="lede" data-motion="fade">Every Monday, forward the messy client threads. Ledgerhound reads what already arrived, diffs it against last year's checklist, and hands you the chase list — with ready-to-send nudges. <strong>You press send. Nothing goes out without you.</strong></p>
-    <div class="hero-actions" data-motion="fade">
-      <a href="#founding" class="btn btn-ink">Claim a founding spot — $349/yr</a>
-      <a href="#demo" class="btn btn-ghost">Run the 60-second demo</a>
-    </div>
-    <p class="hero-note" data-motion="fade">No inbox access at launch · You approve every email · 20 founding firms</p>
+  <div class="machine-sec">
+    <div class="machine-rig" id="machine-rig">
+      <div class="machine-stack">
+        <div class="machine-copy">
+          <section class="hero" aria-labelledby="hero-h">
+            <p class="eyebrow" data-motion="fade">For bookkeepers &amp; accountants who chase documents</p>
+            <h1 id="hero-h" class="hero-h">Stop chasing client documents. <em>Start receiving them.</em></h1>
+            <p class="lede" data-motion="fade">Every Monday, forward the messy client threads. Ledgerhound reads what already arrived, diffs it against last year's checklist, and hands you the chase list — with ready-to-send nudges. <strong>You press send. Nothing goes out without you.</strong></p>
+            <div class="hero-actions" data-motion="fade">
+              <a href="#founding" class="btn btn-ink">Claim a founding spot — $349/yr</a>
+              <a href="#demo" class="btn btn-ghost">Run the 60-second demo</a>
+            </div>
+            <p class="hero-note" data-motion="fade">No inbox access at launch · You approve every email · 20 founding firms</p>
+          </section>
 
-    <!-- The Monday machine -->
-    <div class="machine" role="img" aria-label="Animation: forwarded client emails are read, and a Monday chase list is stamped out with received and missing items.">
-      <div class="machine-inbox" aria-hidden="true">
-        <div class="mailcard mc-1"><span class="mc-from">Marta K. — Harbor Dental</span><span class="mc-subj">August statements attached</span></div>
-        <div class="mailcard mc-2"><span class="mc-from">Dev P. — Cedar Coffee Co.</span><span class="mc-subj">receipts pile from the van</span></div>
-        <div class="mailcard mc-3"><span class="mc-from">Priya S. — Wren Fabrication</span><span class="mc-subj">P&amp;L draft + loan statement</span></div>
-        <div class="machine-tray"><span>MON&nbsp;09:00 · FORWARD&nbsp;THE&nbsp;MESS</span></div>
-      </div>
-      <div class="machine-list" aria-hidden="true">
-        <div class="list-head"><span class="lh-file">MONDAY CHASE LIST</span><span class="lh-date">WEEK 36 · BRIGHTLINE BOOKKEEPING</span></div>
-        <ol class="chase-rows">
-          <li class="crow is-in"><span class="crow-client">Harbor Dental</span><span class="crow-doc">Bank statements — Aug</span><span class="stamp stamp-in">Received</span></li>
-          <li class="crow is-in"><span class="crow-client">Wren Fabrication</span><span class="crow-doc">Payroll report — Sept</span><span class="stamp stamp-in">Received</span></li>
-          <li class="crow is-out"><span class="crow-client">Cedar Coffee Co.</span><span class="crow-doc">Receipts — fuel &amp; software</span><span class="stamp stamp-out">Missing</span></li>
-          <li class="crow is-out"><span class="crow-client">Wren Fabrication</span><span class="crow-doc">1099 / supplier confirmations</span><span class="stamp stamp-out">Missing</span></li>
-          <li class="crow is-out"><span class="crow-client">Harbor Dental</span><span class="crow-doc">Loan statement — Q3</span><span class="stamp stamp-out">Missing</span></li>
-        </ol>
-        <div class="list-foot"><span class="lh-send">NEXT: SEND 3 NUDGES — YOUR FINGER, OUR DRAFTS</span></div>
+          <div class="beats-block">
+            <p class="eyebrow">— The Monday machine</p>
+            <ol class="beats" id="beats">
+              <li class="beat" data-beat="0"><span class="bn">09:00</span><span>You forward last week's client threads — the half-sentences, the "see attached", the scanned piles.</span></li>
+              <li class="beat" data-beat="1"><span class="bn">09:04</span><span>The hound reads what actually arrived and tags every document it can point at.</span></li>
+              <li class="beat" data-beat="2"><span class="bn">09:12</span><span>Each checklist row is stamped <em>received</em> or <em>missing</em> against your own list.</span></li>
+              <li class="beat on" data-beat="3"><span class="bn">09:15</span><span>Nudges are drafted in your tone. You read, tweak, send. The week is filed.</span></li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- The device. Renders its finished state with no JS; app.js scrubs it. -->
+        <div class="rig-col">
+          <div class="rig" role="img" aria-label="A laptop showing Ledgerhound processing a Monday: forwarded client emails are read and tagged, each checklist row is stamped received or missing, and a phone shows a ready-to-send nudge draft.">
+            <div class="laptop" id="laptop">
+              <div class="lid">
+                <div class="screen">
+                  <div class="notch"></div>
+                  <div class="dapp">
+                    <div class="dbar">
+                      <span class="ddot"></span>
+                      <span class="dt">Ledgerhound — Monday brief</span>
+                      <span class="dclock" id="dclock">MON 09:15</span>
+                    </div>
+                    <div class="dpanes">
+                      <div class="dpane dpane-in">
+                        <div class="dph"><span>Forwarded</span><span id="dreadct">3/3</span></div>
+                        <div id="dmails">
+                          <div class="dm read"><div class="df">Marta K. · Harbor Dental</div><div class="ds">August statements attached</div><div class="dtag">STMT</div></div>
+                          <div class="dm read"><div class="df">Dev P. · Cedar Coffee Co.</div><div class="ds">receipts pile from the van</div><div class="dtag">RECPT</div></div>
+                          <div class="dm read"><div class="df">Priya S. · Wren Fabrication</div><div class="ds">P&amp;L draft + loan statement</div><div class="dtag">P&amp;L</div></div>
+                        </div>
+                        <div class="dscan" id="dscan"></div>
+                        <div class="dtray on" id="dtray-in">Nothing stored · checklist only</div>
+                      </div>
+                      <div class="dpane">
+                        <div class="dph"><span id="drhead">Monday chase list</span><span id="dclct">3 received</span></div>
+                        <div id="drows">
+                          <div class="dr got on"><span class="dd">Bank statements — Aug</span><span class="dst">Received</span></div>
+                          <div class="dr got on"><span class="dd">Profit &amp; loss — Q3</span><span class="dst">Received</span></div>
+                          <div class="dr got on"><span class="dd">Loan statement — Q3</span><span class="dst">Received</span></div>
+                          <div class="dr miss on"><span class="dd">Receipts — fuel</span><span class="dst">Missing</span></div>
+                          <div class="dr miss on"><span class="dd">Payroll — Sept</span><span class="dst">Missing</span></div>
+                          <div class="dr miss on"><span class="dd">1099 confirmations</span><span class="dst">Missing</span></div>
+                        </div>
+                        <div class="dtray on" id="dtray">Next: send 3 nudges</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="lbase"></div>
+            </div>
+            <div class="lfoot"></div>
+            <div class="dphone on" id="dphone">
+              <div class="dpscr">
+                <div class="dphead">Nudge draft · Cedar Coffee</div>
+                <div class="dpbody">Hi Dev — doing the Monday round-up. Still waiting on <b>receipts (fuel &amp; software)</b>. If you can send them by Friday we'll close the month on time.<br><br>Thanks,<br>Brightline Bookkeeping</div>
+                <div class="dpsend">Send — your finger, our draft</div>
+              </div>
+            </div>
+            <div class="dfiled on" id="dfiled">FILED<br>09:15</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="ticker" data-motion="fade">
-      <span class="ticker-num" id="ticker-num" data-target="261000">0</span>
+    <div class="ticker">
+      <span class="ticker-num" id="ticker-num" data-target="261000">261,000</span>
       <span class="ticker-label">hours US accounting firms spent chasing client documents last week — conservative estimate: ~52,200 firms × 5 hrs. Sources in <a href="#faq">FAQ</a>.</span>
     </div>
-  </section>
+  </div>
 </div>
 
 <!-- doc marquee -->
-<div class="marquee-band" aria-hidden="false">
-  <div class="marquee-label"><button id="mq-pause" class="mq-pause" aria-pressed="false" aria-label="Pause scrolling document names">Pause</button></div>
+<div class="marquee-band">
+  <div class="marquee-label"><button type="button" id="mq-pause" class="mq-pause" aria-pressed="false">Pause</button></div>
   <div class="marquee" id="marquee" aria-hidden="true"><div class="marquee-track" id="marquee-track"></div></div>
 </div>
 
@@ -105,13 +166,18 @@
       <p class="sec-lede">Statements, receipts, payroll runs, VAT sheets, 1099s — requested every month, promised every month, arriving late every month. The chasing in between is the part nobody bills for.</p>
     </div>
     <div class="chase-grid">
-      <div class="ledger" role="table" aria-label="What chasing costs, with sources">
-        <div class="ledger-row ledger-head" role="row"><span role="columnheader">What</span><span role="columnheader">Amount</span><span role="columnheader">Basis</span></div>
-        <div class="ledger-row" role="row"><span role="cell">Chasing time, solo practitioners</span><span class="num" role="cell">5–10 hrs/wk</span><span role="cell">Community-verified, Aug 2026 — EXH-01</span></div>
-        <div class="ledger-row" role="row"><span role="cell">One team member at 3 hrs/wk, $150/hr</span><span class="num" role="cell">$21,600/yr</span><span role="cell">Published firm math, checked</span></div>
-        <div class="ledger-row" role="row"><span role="cell">US accountant median wage</span><span class="num" role="cell">$83,680/yr</span><span role="cell">US BLS, May 2025</span></div>
-        <div class="ledger-row" role="row"><span role="cell">Firms in the US alone</span><span class="num" role="cell">~52,200 + 34,900 solo</span><span role="cell">Industry counts, Jan 2025</span></div>
-      </div>
+      <table class="ledger">
+        <caption class="vh">What chasing costs, with sources</caption>
+        <thead>
+          <tr><th scope="col">What</th><th scope="col">Amount</th><th scope="col">Basis</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Chasing time, solo practitioners</td><td class="num">5–10 hrs/wk</td><td>Practitioner reports, Aug 2026 — EXH-01</td></tr>
+          <tr><td>One team member at 3 hrs/wk, $150/hr</td><td class="num">$21,600/yr</td><td>3 × $150 × 48 weeks</td></tr>
+          <tr><td>US accountant median wage</td><td class="num">$83,680/yr</td><td>US BLS, May 2025</td></tr>
+          <tr><td>Firms in the US alone</td><td class="num">~52,200 + 34,900 solo</td><td>Industry counts, Jan 2025</td></tr>
+        </tbody>
+      </table>
       <div class="exhibits">
         <figure class="exhibit" data-motion="rise">
           <span class="ex-code">EXH-01</span>
@@ -134,58 +200,61 @@
 </div>
 
 <!-- ───────────────────────── HOW ───────────────────────── -->
-<div class="wrap">
-  <section class="how" id="how" aria-labelledby="how-h">
-    <div class="sec-head">
-      <p class="eyebrow">— 02 · How it works</p>
-      <h2 id="how-h">A Monday cadence, <em>not another portal.</em></h2>
-      <p class="sec-lede">No client logins to chase, no inbox connection required at launch. The whole loop runs on things you already have: your email, your checklist, your send button.</p>
-    </div>
-    <ol class="steps">
-      <li class="step" data-motion="rise">
-        <span class="step-stamp">FWD · MON 09:00</span>
-        <h3>Forward the mess</h3>
-        <p>Dump last week's client emails into your Ledgerhound address — the half-sentences, the "see attached", the scanned piles. Paste last year's checklist once per client; it remembers.</p>
-      </li>
-      <li class="step" data-motion="rise">
-        <span class="step-stamp">READ · MON 09:04</span>
-        <h3>The hound reads &amp; diffs</h3>
-        <p>It works out which documents actually arrived, from whom, and what's still outstanding against your checklist — with confidence flags on anything uncertain.</p>
-      </li>
-      <li class="step" data-motion="rise">
-        <span class="step-stamp">CHASE · MON 09:15</span>
-        <h3>You send the chase</h3>
-        <p>A per-client chase list with ready-to-send nudge drafts in your tone. Read, tweak, send. Nothing leaves without your finger on the button — ever.</p>
-      </li>
-    </ol>
-    <div class="how-trust">
-      <span class="trust-item">Price locked while you subscribe</span>
-      <span class="trust-dot" aria-hidden="true"></span>
-      <span class="trust-item">One-click cancel</span>
-      <span class="trust-dot" aria-hidden="true"></span>
-      <span class="trust-item">Export everything, anytime</span>
-    </div>
-  </section>
+<div class="how">
+  <div class="wrap">
+    <section id="how" aria-labelledby="how-h">
+      <div class="sec-head">
+        <p class="eyebrow">— 02 · How it works</p>
+        <h2 id="how-h">A Monday cadence, <em>not another portal.</em></h2>
+        <p class="sec-lede">No client logins to chase, no inbox connection required at launch. The whole loop runs on things you already have: your email, your checklist, your send button.</p>
+      </div>
+      <ol class="steps">
+        <li class="step" data-motion="rise">
+          <span class="step-stamp">FWD · MON 09:00</span>
+          <h3>Forward the mess</h3>
+          <p>Dump last week's client emails into your Ledgerhound address — the half-sentences, the "see attached", the scanned piles. Paste last year's checklist once per client; it remembers.</p>
+        </li>
+        <li class="step" data-motion="rise">
+          <span class="step-stamp">READ · MON 09:04</span>
+          <h3>The hound reads &amp; diffs</h3>
+          <p>It works out which documents actually arrived, from whom, and what's still outstanding against your checklist — with confidence flags on anything uncertain.</p>
+        </li>
+        <li class="step" data-motion="rise">
+          <span class="step-stamp">CHASE · MON 09:15</span>
+          <h3>You send the chase</h3>
+          <p>A per-client chase list with ready-to-send nudge drafts in your tone. Read, tweak, send. Nothing leaves without your finger on the button — ever.</p>
+        </li>
+      </ol>
+      <div class="how-trust">
+        <span class="trust-item">Price locked while you subscribe</span>
+        <span class="trust-dot" aria-hidden="true"></span>
+        <span class="trust-item">One-click cancel</span>
+        <span class="trust-dot" aria-hidden="true"></span>
+        <span class="trust-item">Export everything, anytime</span>
+      </div>
+    </section>
+  </div>
 </div>
 
 <!-- ───────────────────────── DEMO ───────────────────────── -->
 <div class="demo-band" id="demo">
   <div class="wrap">
-    <section class="demo" aria-labelledby="demo-h">
+    <section aria-labelledby="demo-h">
       <div class="sec-head sec-head-light">
         <p class="eyebrow">— 03 · Live demo · runs in your browser, nothing is uploaded or stored server-side</p>
         <h2 id="demo-h">Watch a Monday <em>get handled.</em></h2>
-        <p class="sec-lede">Six client emails came in overnight. Forward each one and watch the hound work out what arrived. Then generate the chase list. This demo is deterministic — the same way v1 parses real threads.</p>
+        <p class="sec-lede">Six client emails came in overnight. Forward each one and watch the hound work out what arrived. Then generate the chase list. The same diff, run entirely on your device.</p>
       </div>
       <div class="demo-grid">
-        <div class="demo-mail" aria-label="Sample forwarded client emails">
-          <div class="demo-mail-head"><span>INBOX — forward each email</span><span id="dm-count">0 / 6 forwarded</span></div>
+        <div class="demo-mail">
+          <div class="demo-mail-head"><span>Inbox — forward each email</span><span id="dm-count">0 / 6 forwarded</span></div>
           <ul class="mails" id="mails"></ul>
           <button class="btn btn-paper" id="dm-all" type="button">Forward all six</button>
+          <p class="demo-note"><strong>This is the real diff, not a video.</strong> The checklist on the right updates from whichever emails you forward, and the chase list is generated from what is still outstanding — all of it in your browser. Nothing is uploaded, and nothing is stored on our servers.</p>
         </div>
         <div class="demo-work">
           <div class="checklist-card">
-            <div class="cl-head"><span>CHECKLIST — Q3 RETAINER · 8 DOCS</span><span id="cl-count">0 received</span></div>
+            <div class="cl-head"><span>Checklist — Q3 retainer · 8 docs</span><span id="cl-count">0 received</span></div>
             <ul class="cl-list" id="cl-list"></ul>
           </div>
           <div class="gen-row">
@@ -193,21 +262,21 @@
             <button class="btn btn-ghost-dark" id="dm-reset" type="button">Reset</button>
           </div>
           <div class="chasecard" id="chasecard" hidden>
-            <div class="chase-head"><span class="lh-file">MONDAY CHASE LIST</span><span id="chase-week">WEEK 36</span></div>
+            <div class="chase-head"><span class="lh-file">Monday chase list</span><span id="chase-week">Week 36</span></div>
             <ol class="chase-out" id="chase-out"></ol>
             <div class="drafts" id="drafts"></div>
             <p class="chase-note">Drafts are starting points — you review and send. <span class="runs" id="runs-left"></span></p>
           </div>
           <div class="gate" id="gate" hidden>
-            <div class="gate-card" role="dialog" aria-modal="false" aria-labelledby="gate-h">
-              <h3 id="gate-h">That's your three free lists.</h3>
+            <div class="gate-card" role="group" aria-labelledby="gate-h">
+              <h3 id="gate-h" tabindex="-1">That's your three free lists.</h3>
               <p>Leave your work email and we'll unlock three more — plus a founding invite when the cohort opens.</p>
-              <form id="gate-form" novalidate="">
+              <form id="gate-form" novalidate>
                 <div class="field">
                   <label for="gate-email">Work email</label>
                   <input id="gate-email" name="email" type="email" required autocomplete="email" placeholder="you@yourfirm.com" aria-describedby="gate-email-hint gate-email-err">
                   <p class="hint" id="gate-email-hint">Founding invites go out weekly. No newsletter, no spam.</p>
-                  <p class="err" id="gate-email-err" hidden></p>
+                  <p class="err" id="gate-email-err" role="alert" hidden></p>
                 </div>
                 <button class="btn btn-accent" type="submit">Unlock three more lists</button>
               </form>
@@ -263,7 +332,7 @@
           <div class="st-row"><span>Docs discovered missing at month-end</span><span class="num">–your evening</span></div>
           <div class="st-row st-total"><span>Founding plan, per year</span><span class="num">$349</span></div>
         </div>
-        <p class="status-note">The first chased receipt pays for the year. Math in the FAQ.</p>
+        <p class="status-note">Roughly six hours of billable time covers the year. Math in the FAQ.</p>
       </div>
     </div>
 
@@ -278,17 +347,17 @@
             <li>No card needed to apply</li>
           </ul>
         </div>
-        <form class="req-form" id="req-form" novalidate="">
+        <form class="req-form" id="req-form" novalidate>
           <div class="field">
             <label for="rq-email">Work email</label>
             <input id="rq-email" name="email" type="email" required autocomplete="email" placeholder="you@yourfirm.com" aria-describedby="rq-email-err">
-            <p class="err" id="rq-email-err" hidden></p>
+            <p class="err" id="rq-email-err" role="alert" hidden></p>
           </div>
           <div class="field">
             <label for="rq-firm">Firm name <span class="opt">(optional)</span></label>
             <input id="rq-firm" name="firm" type="text" autocomplete="organization" placeholder="Brightline Bookkeeping">
           </div>
-          <div class="field hp" aria-hidden="true">
+          <div class="field hp">
             <label for="rq-website">Website</label>
             <input id="rq-website" name="website" type="text" tabindex="-1" autocomplete="off">
           </div>
@@ -339,7 +408,7 @@
       </details>
       <details class="qa">
         <summary>Where do the numbers on this page come from?<span class="qa-mark" aria-hidden="true"></span></summary>
-        <div class="qa-body"><p>The chasing-hours range is a verbatim quote from an active r/Accounting thread (Aug 2026); the $21,600/year figure is published firm arithmetic (3 hrs/wk × $150 × 48 weeks) we verified; the wage and firm counts are US BLS (May 2025) and industry counts (Jan 2025). The hero ticker multiplies ~52,200 US CPA firms by a conservative 5 hrs/week — it's an estimate, and we label it as one. Full sources ship with our research notes on request.</p></div>
+        <div class="qa-body"><p>The chasing-hours range is a verbatim quote from an active r/Accounting thread (Aug 2026); the $21,600/year figure is straightforward arithmetic (3 hrs/wk × $150 × 48 weeks); the wage and firm counts are US BLS (May 2025) and industry counts (Jan 2025). The hero ticker multiplies ~52,200 US CPA firms by a conservative 5 hrs/week — it's an estimate, and we label it as one. Full sources ship with our research notes on request.</p></div>
       </details>
     </div>
   </section>
@@ -362,7 +431,7 @@
 <footer class="foot">
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <svg class="brand-mark" width="26" height="26" viewBox="0 0 30 30" aria-hidden="true" focusable="false"><rect x="1.5" y="1.5" width="27" height="27" rx="6" fill="currentColor"/><rect x="7" y="8.5" width="16" height="2.4" rx="1.2" fill="var(--paper)"/><rect x="7" y="14" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".72"/><rect x="7" y="19.5" width="16" height="2.4" rx="1.2" fill="var(--paper)" opacity=".45"/><circle cx="22.6" cy="20.7" r="4.6" fill="none" stroke="#c0392b" stroke-width="1.8"/></svg>
+      <svg class="brand-mark" width="26" height="26" viewBox="0 0 30 30" aria-hidden="true" focusable="false"><rect x="1.5" y="1.5" width="27" height="27" rx="6" fill="currentColor"/><rect x="7" y="8.5" width="16" height="2.4" rx="1.2" fill="var(--ink)"/><rect x="7" y="14" width="16" height="2.4" rx="1.2" fill="var(--ink)" opacity=".72"/><rect x="7" y="19.5" width="16" height="2.4" rx="1.2" fill="var(--ink)" opacity=".45"/><circle cx="22.6" cy="20.7" r="4.6" fill="none" stroke="var(--red)" stroke-width="1.8"/></svg>
       <span>Ledgerhound</span>
       <p class="foot-tag">The Monday chase list for bookkeepers.</p>
     </div>
@@ -374,15 +443,80 @@
     </nav>
     <div class="foot-imprint">
       <p><strong>[LEGAL ENTITY NAME]</strong> · m.b. [MB] · PIB [PIB]<br>[REGISTERED ADDRESS], Belgrade, Serbia<br>hello@ledgerhound.app</p>
-      <p class="foot-mor">Payments &amp; VAT handled by our merchant of record (Polar). Prices locked while subscribed.</p>
+      <p class="foot-mor">Payments &amp; VAT handled by our merchant of record. Prices locked while subscribed.</p>
       <p class="foot-fine">© 2026 · Filed from Belgrade, Serbia</p>
     </div>
   </div>
 </footer>
 
-<noscript>
-  <style>.machine .mailcard,.machine-tray{opacity:1;transform:none}.chase-rows .crow{opacity:1;transform:none}[data-motion]{opacity:1;transform:none}.marquee-track{animation:none}</style>
-</noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ledgerhound.app/#org",
+      "name": "Ledgerhound",
+      "url": "https://ledgerhound.app/",
+      "logo": "https://ledgerhound.app/assets/img/brand/icon-512.png",
+      "email": "hello@ledgerhound.app",
+      "address": { "@type": "PostalAddress", "addressLocality": "Belgrade", "addressCountry": "RS" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ledgerhound.app/#website",
+      "url": "https://ledgerhound.app/",
+      "name": "Ledgerhound",
+      "publisher": { "@id": "https://ledgerhound.app/#org" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://ledgerhound.app/#app",
+      "name": "Ledgerhound",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Accounting document management",
+      "operatingSystem": "Web",
+      "description": "Forward your clients' document emails once a week; Ledgerhound reads what arrived, diffs it against each client's checklist, and returns a chase list with ready-to-send nudge drafts. It never sends email on your behalf.",
+      "url": "https://ledgerhound.app/",
+      "publisher": { "@id": "https://ledgerhound.app/#org" },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Founding plan",
+          "price": "349",
+          "priceCurrency": "USD",
+          "category": "Annual subscription",
+          "availability": "https://schema.org/PreOrder",
+          "eligibleQuantity": { "@type": "QuantitativeValue", "value": 20, "unitText": "firms" }
+        },
+        {
+          "@type": "Offer",
+          "name": "Standard plan",
+          "price": "49",
+          "priceCurrency": "USD",
+          "category": "Monthly subscription",
+          "availability": "https://schema.org/PreOrder"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://ledgerhound.app/#faq",
+      "mainEntity": [
+        { "@type": "Question", "name": "What exactly does Ledgerhound do?", "acceptedAnswer": { "@type": "Answer", "text": "Once a week you forward your clients' document emails to a dedicated Ledgerhound address. It reads what actually arrived, matches it against each client's checklist, and produces a chase list with confidence flags, plus draft nudge emails. You review and send them. It never emails anyone by itself." } },
+        { "@type": "Question", "name": "Do you connect to or read our inbox?", "acceptedAnswer": { "@type": "Answer", "text": "Not at launch. V1 runs on forwarding — no OAuth, no inbox scopes. A read-only inbox integration is on the roadmap and would be strictly opt-in." } },
+        { "@type": "Question", "name": "Is our client data safe?", "acceptedAnswer": { "@type": "Answer", "text": "V1 stores the extracted document checklist — client name, document type, received/missing status, dates — not your clients' documents or full email bodies. Hosting is in the EU, encrypted in transit, and a signed DPA is available on request." } },
+        { "@type": "Question", "name": "Who sends the chase emails?", "acceptedAnswer": { "@type": "Answer", "text": "You do. Ledgerhound drafts; you read, edit, and send from your own mailbox, so your clients hear from you and deliverability stays yours." } },
+        { "@type": "Question", "name": "Is this accounting or legal advice?", "acceptedAnswer": { "@type": "Answer", "text": "No. Ledgerhound is a drafting and tracking tool. Every output is a starting point for a professional to review." } },
+        { "@type": "Question", "name": "What if it misses something?", "acceptedAnswer": { "@type": "Answer", "text": "Uncertain matches carry confidence flags instead of silent guesses, and founding firms get a weekly human hand-check of every generated list during onboarding." } },
+        { "@type": "Question", "name": "How does the refund work?", "acceptedAnswer": { "@type": "Answer", "text": "Founding plans are refundable in full, no questions asked, until v1 ships to the founding cohort. After that you can cancel in one click at any time and the price stays locked while you are subscribed." } },
+        { "@type": "Question", "name": "Where do the numbers on this page come from?", "acceptedAnswer": { "@type": "Answer", "text": "The chasing-hours range is a verbatim quote from an r/Accounting thread (Aug 2026); the $21,600/year figure is 3 hrs/wk × $150 × 48 weeks; wage and firm counts are US BLS (May 2025) and industry counts (Jan 2025). The hero ticker is a labelled estimate: ~52,200 US firms × 5 hrs." } }
+      ]
+    }
+  ]
+}
+</script>
 <script src="/assets/js/vendor/gsap.min.js" defer></script>
 <script src="/assets/js/vendor/ScrollTrigger.min.js" defer></script>
 <script src="/assets/js/demo.js" defer></script>

@@ -1,0 +1,10 @@
+# Everything the client needs but the CDN should never serve.
+docs/
+tests/
+tools/
+node_modules/
+eslint.config.js
+.stylelintrc.json
+.htmlvalidate.json
+package.json
+package-lock.json
