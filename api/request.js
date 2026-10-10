@@ -63,19 +63,36 @@ export default async function handler(req, res) {
     return;
   }
 
+  const declared = Number(req.headers["content-length"]);
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    res.status(413).json({ error: "body too large" });
+    return;
+  }
+
   let body;
   try {
     if (typeof req.body === "object" && req.body !== null) {
+      // Vercel can hand us an already parsed JSON object. Apply the same
+      // byte ceiling to that path instead of silently bypassing the limit.
+      if (Buffer.byteLength(JSON.stringify(req.body), "utf8") > MAX_BODY_BYTES) {
+        res.status(413).json({ error: "body too large" });
+        return;
+      }
       body = req.body;
     } else {
       const raw = String(req.body || "");
-      if (raw.length > MAX_BODY_BYTES) {
+      if (Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES) {
         res.status(413).json({ error: "body too large" });
         return;
       }
       body = JSON.parse(raw || "{}");
     }
   } catch {
+    res.status(400).json({ error: "bad json" });
+    return;
+  }
+
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
     res.status(400).json({ error: "bad json" });
     return;
   }
@@ -129,11 +146,18 @@ export default async function handler(req, res) {
       });
       delivered = r.ok;
       if (!r.ok) console.error("LEDGERHOUND_RESEND_FAILED status=%s", r.status);
-    } catch (err) {
-      console.error("LEDGERHOUND_RESEND_ERROR", err && err.message);
+    } catch {
+      console.error("LEDGERHOUND_RESEND_ERROR");
     }
   }
 
-  console.log("LEDGERHOUND_REQUEST %s %s", JSON.stringify(record), delivered ? "notified" : "queued-only");
+  if (delivered) {
+    // Delivery is the durable copy; diagnostic logs need no contact payload.
+    console.log("LEDGERHOUND_REQUEST notified");
+  } else {
+    // Existing fallback queue of record. Removing this payload would silently
+    // lose requests until deployment has a durable inbox/outbox configured.
+    console.log("LEDGERHOUND_REQUEST %s queued-only", JSON.stringify(record));
+  }
   res.status(200).json({ ok: true, notified: delivered });
 }
